@@ -4,6 +4,7 @@ import os
 import sys
 from pathlib import Path
 
+
 def main():
     """Run administrative tasks."""
     sys.path.append(str(Path(__file__).resolve().parent.parent))
