@@ -1,6 +1,7 @@
+from django.http import Http404
 from django.shortcuts import render
 
-posts = [
+posts: list[dict[str, int | str]] = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -43,17 +44,17 @@ posts = [
     },
 ]
 
+posts_map: dict[int, dict[str, int|str]] = {post['id']: post for post in posts}
 
 def index(request):
     return render(request, 'blog/index.html', {'posts': posts[::-1]})
 
 
-def post_detail(request, id):
-    post = None
-    for item in posts:
-        if item['id'] == id:
-            post = item
-            break
+def post_detail(request, post_id):
+    try:
+        post = posts_map[post_id]
+    except KeyError as exc:
+        raise Http404('Публикация не найдена') from exc
     return render(request, 'blog/detail.html', {'post': post})
 
 
